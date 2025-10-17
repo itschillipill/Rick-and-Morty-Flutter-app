@@ -23,7 +23,10 @@ class LocalDataSource {
     return jsonDecode(content) as Map<String, dynamic>;
   }
 
-  Future<void> saveCharactersResponse(List<Character> characters, {required int page}) async {
+  Future<void> saveCharactersResponse(
+    List<Character> characters, {
+    required int page,
+  }) async {
     final file = await _getCacheFile();
     Map<String, dynamic> cache = await _readCache();
 
@@ -43,18 +46,22 @@ class LocalDataSource {
       return null;
     }
   }
-  
-  Future<List<Character>?> getListOfCharacters({required List<String> ids}) async {
+
+  Future<List<Character>?> getListOfCharacters({
+    required List<String> ids,
+  }) async {
     try {
       final cache = await _readCache();
-      final allCharacters = cache.values
-          .expand((pageList) => (pageList as List))
-          .map((e) => Character.fromJson(e))
-          .toList();
+      final allCharacters =
+          cache.values
+              .expand((pageList) => (pageList as List))
+              .map((e) => Character.fromJson(e))
+              .toList();
 
-      final favorites = allCharacters
-          .where((char) => ids.contains(char.id.toString()))
-          .toList();
+      final favorites =
+          allCharacters
+              .where((char) => ids.contains(char.id.toString()))
+              .toList();
 
       return favorites;
     } catch (_) {

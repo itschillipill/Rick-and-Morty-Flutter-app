@@ -14,25 +14,20 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
- List<String> favoritesIds = [];
- bool isFavorite(String id)=> favoritesIds.contains(id);
+  List<String> favoritesIds = [];
+  bool isFavorite(String id) => favoritesIds.contains(id);
   @override
   Widget build(BuildContext context) {
     final localDataSource = DependenciesScope.of(context).localDataSource;
     final charactersCubit = DependenciesScope.of(context).charactersCubit;
     favoritesIds = localDataSource.getFavoritesIds();
-               charactersCubit.getListOfCharacters(favoritesIds);
+    charactersCubit.getListOfCharacters(favoritesIds);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favorites'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Favorites'), centerTitle: true),
       body: BlocBuilder<CharactersCubit, CharactersState>(
         builder: (context, state) {
-          if(favoritesIds.isEmpty){
-           return const Center(
-                  child: Text("No favorites"),
-                );
+          if (favoritesIds.isEmpty) {
+            return const Center(child: Text("No favorites"));
           }
           switch (state.status) {
             case CharactersStatus.loading:
@@ -47,33 +42,32 @@ class _FavoritesPageState extends State<FavoritesPage> {
               );
             case CharactersStatus.success:
               return RefreshIndicator(
-                onRefresh: ()async{
+                onRefresh: () async {
                   setState(() {
                     favoritesIds = localDataSource.getFavoritesIds();
                   });
-                  },
-                child:  ListView.builder(
+                },
+                child: ListView.builder(
                   padding: const EdgeInsets.all(10),
                   itemCount: state.characters.length,
                   itemBuilder: (context, index) {
                     final character = state.characters[index];
                     return CharacterCard(
-                    character: character, 
-                    isFavorite: isFavorite(character.id.toString()), 
-                    onFavoriteToggle: (){
-                      setState(() {
-                        if(isFavorite(character.id.toString())){
-                          favoritesIds.remove(character.id.toString());
-                        }
-                        else{
-                          favoritesIds.add(character.id.toString());
-                        }
+                      character: character,
+                      isFavorite: isFavorite(character.id.toString()),
+                      onFavoriteToggle: () {
+                        setState(() {
+                          if (isFavorite(character.id.toString())) {
+                            favoritesIds.remove(character.id.toString());
+                          } else {
+                            favoritesIds.add(character.id.toString());
+                          }
                           localDataSource.setFavoritesIds(favoritesIds);
-                      });
-                    });
+                        });
+                      },
+                    );
                   },
-                )
-                
+                ),
               );
             default:
               return const SizedBox.shrink();

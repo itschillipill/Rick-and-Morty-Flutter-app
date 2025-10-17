@@ -11,11 +11,7 @@ class InitializationSplashScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      home: Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

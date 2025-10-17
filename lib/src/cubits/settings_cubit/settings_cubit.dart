@@ -6,12 +6,12 @@ import 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   final SharedPreferences _prefs;
-  SettingsCubit(this._prefs) : super(SettingsState.initial()){
+  SettingsCubit(this._prefs) : super(SettingsState.initial()) {
     _loadSettings();
   }
 
   void _loadSettings() {
-    final themeMode =ThemeMode.values[_prefs.getInt('themeMode') ?? 0];
+    final themeMode = ThemeMode.values[_prefs.getInt('themeMode') ?? 0];
     emit(state.copyWith(themeMode: themeMode));
   }
 
@@ -19,5 +19,4 @@ class SettingsCubit extends Cubit<SettingsState> {
     _prefs.setInt('themeMode', themeMode.index);
     _loadSettings();
   }
-
 }

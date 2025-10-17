@@ -14,8 +14,6 @@ class CharcrerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    
     return Scaffold(
       appBar: AppBar(title: Text(character.name)),
       body: LayoutBuilder(
@@ -38,76 +36,71 @@ class CharcrerView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Status"),
-                      Text(character.status),
-                    ],
-                   ),
-                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Species"),
-                      Text(character.species),
-                    ],
-                   ),
-                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Gender"),
-                      Text(character.gender),
-                    ],
-                   ),
-                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Type"),
-                      Text(character.type),
-                    ],
-                   ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Text("Status"), Text(character.status)],
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Text("Species"), Text(character.species)],
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Text("Gender"), Text(character.gender)],
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [Text("Type"), Text(character.type)],
+                    ),
                   ],
                 ),
               ),
-             Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                Text("Home planet: ${character.origin.name}"),
-               Text("Location: ${character.location.name},"),
-               ],),
-             ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Home planet: ${character.origin.name}"),
+                    Text("Location: ${character.location.name},"),
+                  ],
+                ),
+              ),
               Text("Episodes:"),
-              Expanded(child: FutureBuilder(
-                future: loadEpisodes(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.data == null || snapshot.hasError) {
-                    return Center(child: Text('Error accured, please check your internet connection and try again later.'));
-                  }
-                  final episodes = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: episodes.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(episodes[index].episode),
-                        subtitle: Text(episodes[index].name),
+              Expanded(
+                child: FutureBuilder(
+                  future: loadEpisodes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.data == null || snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          'Error accured, please check your internet connection and try again later.',
+                        ),
                       );
-                    },
-                  );
-                }
-              )),
+                    }
+                    final episodes = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: episodes.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(episodes[index].episode),
+                          subtitle: Text(episodes[index].name),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           );
-        },  
+        },
       ),
     );
   }

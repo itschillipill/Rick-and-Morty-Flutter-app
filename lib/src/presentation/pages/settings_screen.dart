@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                ListTile( 
+                ListTile(
                   title: Text("Theme"),
                   leading: Icon(Icons.dark_mode),
                   subtitle: Text("Choose app theme"),

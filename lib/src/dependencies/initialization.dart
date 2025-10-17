@@ -42,8 +42,9 @@ class InitializationExecutor
           await _catchExceptions();
           if (orientations != null)
             await SystemChrome.setPreferredOrientations(orientations);
-          final dependencies = await $initializeDependencies(
-          ).timeout(const Duration(minutes: 5));
+          final dependencies = await $initializeDependencies().timeout(
+            const Duration(minutes: 5),
+          );
           notifyProgress(100, 'Done');
           onSuccess?.call(dependencies);
           return dependencies;
