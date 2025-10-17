@@ -1,16 +1,33 @@
-# rick_and_morty
+# 🧪 Rick and Morty Flutter App
 
-A new Flutter project.
+A Flutter app that uses the public Rick and Morty API (https://rickandmortypi.com/) to browse characters, episodes, and favorites.
+The project uses Dio, StatefulWidget, asynchronous requests, and a layered architecture (data, presentation, etc.).
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
 
-A few resources to get you started if this is your first Flutter project:
+- Getting data from a public API
+- Browsing a list of characters
+- Adding characters to favorites
+- Using Dio for HTTP requests
+- Navigating between pages
+- Switching themes
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🧰 Technologies and Dependencies
+
+| Technology | Purpose |
+|-------------|------------|
+| [Flutter](https://flutter.dev) | The main platformer |
+| [Dio](https://pub.dev/packages/dio) | HTTP client for working with the API |
+| [Rick and Morty API](https://rickandmortyapi.com/) | Data source |
+
+---
+
+## 📦 Installation and Run
+
+1. **Clone repositories**
+``` bash
+git clone https://github.com/itschillipill/Rick-and-Morty-Flutter-app.git
