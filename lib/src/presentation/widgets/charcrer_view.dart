@@ -3,34 +3,21 @@ import 'package:rick_and_morty/src/data/data_sources/remote_data_sources/episode
 import 'package:rick_and_morty/src/data/models/character.dart';
 import 'package:rick_and_morty/src/data/models/episode.dart';
 
-class CharcrerView extends StatefulWidget {
+class CharcrerView extends StatelessWidget {
   final Character character;
   const CharcrerView({super.key, required this.character});
 
-  @override
-  State<CharcrerView> createState() => _CharcrerViewState();
-}
+  Future<List<Episode>> loadEpisodes() async {
+    List<String> ids = character.episode.map((e) => e.split('/').last).toList();
+    return await EpisodeService().getListOfEpisodes(ids);
+  }
 
-class _CharcrerViewState extends State<CharcrerView> {
-  List<Episode> episodes = [];
-  @override
-  void initState() {
-    loadEpisodes();
-    super.initState();
-  }
-  Future<void> loadEpisodes() async {
-    List<String> ids = widget.character.episode.map((e) => e.split('/').last).toList();
-    final episode = await EpisodeService().getListOfEpisodes(ids);
-      setState(() {
-        episodes=episode;
-      });
-  }
   @override
   Widget build(BuildContext context) {
     
     
     return Scaffold(
-      appBar: AppBar(title: Text(widget.character.name)),
+      appBar: AppBar(title: Text(character.name)),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Column(
@@ -41,7 +28,7 @@ class _CharcrerViewState extends State<CharcrerView> {
                 height: constraints.maxHeight * 0.4,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(widget.character.image),
+                    image: NetworkImage(character.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -56,7 +43,7 @@ class _CharcrerViewState extends State<CharcrerView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("Status"),
-                      Text(widget.character.status),
+                      Text(character.status),
                     ],
                    ),
                    Column(
@@ -64,7 +51,7 @@ class _CharcrerViewState extends State<CharcrerView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("Species"),
-                      Text(widget.character.species),
+                      Text(character.species),
                     ],
                    ),
                    Column(
@@ -72,7 +59,7 @@ class _CharcrerViewState extends State<CharcrerView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("Gender"),
-                      Text(widget.character.gender),
+                      Text(character.gender),
                     ],
                    ),
                    Column(
@@ -80,7 +67,7 @@ class _CharcrerViewState extends State<CharcrerView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("Type"),
-                      Text(widget.character.type),
+                      Text(character.type),
                     ],
                    ),
                   ],
@@ -92,19 +79,31 @@ class _CharcrerViewState extends State<CharcrerView> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text("Home planet: ${widget.character.origin.name}"),
-               Text("Location: ${widget.character.location.name},"),
+                Text("Home planet: ${character.origin.name}"),
+               Text("Location: ${character.location.name},"),
                ],),
              ),
               Text("Episodes:"),
-              Expanded(child: ListView.builder(
-                itemCount: episodes.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(episodes[index].episode),
-                    subtitle: Text(episodes[index].name),
+              Expanded(child: FutureBuilder(
+                future: loadEpisodes(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.data == null || snapshot.hasError) {
+                    return Center(child: Text('Error accured, please check your internet connection and try again later.'));
+                  }
+                  final episodes = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: episodes.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(episodes[index].episode),
+                        subtitle: Text(episodes[index].name),
+                      );
+                    },
                   );
-                },
+                }
               )),
             ],
           );
