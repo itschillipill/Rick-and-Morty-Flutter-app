@@ -28,7 +28,7 @@ class _CharactersPageState extends State<CharactersPage> {
           case CharactersStatus.failure:
             return Center(
               child: Text(
-                'Failed to load characters:\n${state.errorMessage}',
+                'Failed to load characters: Please check your internet connection and try again.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.red),
               ),

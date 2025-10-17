@@ -29,6 +29,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
       ),
       body: BlocBuilder<CharactersCubit, CharactersState>(
         builder: (context, state) {
+          if(favoritesIds.isEmpty){
+           return const Center(
+                  child: Text("No favorites"),
+                );
+          }
           switch (state.status) {
             case CharactersStatus.loading:
               return const Center(child: CircularProgressIndicator());
@@ -47,7 +52,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     favoritesIds = localDataSource.getFavoritesIds();
                   });
                   },
-                child: favoritesIds.isNotEmpty? ListView.builder(
+                child:  ListView.builder(
                   padding: const EdgeInsets.all(10),
                   itemCount: state.characters.length,
                   itemBuilder: (context, index) {
@@ -67,10 +72,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       });
                     });
                   },
-                ):
-                const Center(
-                  child: Text("No favorites"),
                 )
+                
               );
             default:
               return const SizedBox.shrink();
